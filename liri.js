@@ -7,7 +7,8 @@ var spotify = new Spotify({
  
 var request = require('request');
 
-var fs = require('file-system');
+var file = require('file-system');
+var fs = require('fs');
 
 /*spotify.search({ type: 'track', query: 'All the Small Things' }, function(err, data) {
   if (err) {
@@ -79,7 +80,42 @@ if (process.argv[2] == "spotify-this-song") {
 	}
 
 } else if (process.argv[2] == "do-what-it-says") {
-	console.log("Understood");
+	// console.log("Understood");
+	fs.readFile('random.txt', 'utf8', (err, data) => {
+	  if (err){
+	  	return console.log('Error occurred: ' + err);
+	  }
+	  data = data.split(' ');
+	  var func = data[0];
+	  var inp = data.splice(1);
+	  inp = inp.join(' ');
+	  // console.log(func);
+	  // console.log(inp);
+	
+	//Dirty Copy Pasta:
+
+	if (func == "spotify-this-song") {
+		if (inp){
+			spotThis(inp);
+		} else {
+			spotThis("The Sign");
+		}
+
+	} else if (func == "my-tweets") {
+		console.log('On the way')
+
+	} else if (func == "movie-this") { 
+		if (inp){
+		movieThis(inp);
+		} else {
+			movieThis('Mr. Nobody')
+		}
+	} else {
+		console.log("Command Not Understood");
+	}
+
+	});
+	// console.log(fs.readFile("yay.txt"));
 } else {
 	console.log("Command Not Understood");
 }
